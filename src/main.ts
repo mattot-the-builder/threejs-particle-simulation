@@ -1,57 +1,40 @@
 import './style.css'
-import { BoxGeometry, Camera, Mesh, MeshBasicMaterial, Object3D, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
 
-class ThreeApp {
-    private canvas: HTMLElement;
-    private renderer!: WebGLRenderer;
-    private scene!: Scene;
-    private camera!: Camera;
-    private cube: Object3D;
+import { BoxGeometry, DoubleSide, GridHelper, Mesh, MeshPhongMaterial, Object3D, Points, Scene, SphereGeometry } from 'three';
 
-    constructor(canvas: HTMLElement) {
-        this.canvas = canvas;
-        this.init();
+import ThreeApp from './libs/ThreeApp';
+import Particle from './libs/Particle';
+import { makeAxisGrid } from './helpers/HelperFunctions';
 
-        this.cube = this.createCube();
-        this.scene.add(this.cube);
+class Gravity {
+    private instance: Gravity;
+    private GRAVITY_ACCELERATION: number = 9.80665; // in m/s^2
 
-        // Bind animate to the current instance
-        this.animate = this.animate.bind(this);
-
-        this.renderer.render(this.scene, this.camera);
+    private constructor() {
+        this.instance = new Gravity();
     }
 
-    init() {
-        //Initialization
-        this.renderer = new WebGLRenderer({ antialias: true, canvas });
-        this.scene = new Scene();
+    getInstance() {
+        if (!this.instance) {
+            this.instance = new Gravity();
+        }
 
-        this.camera = new PerspectiveCamera(75, 2, 0.1, 5);
-        this.camera.position.z = 2;
-    }
-
-    animate(time: number) {
-        time *= 0.001;  // convert time to seconds
-
-        this.cube.rotation.x = time;
-        this.cube.rotation.y = time;
-
-        this.renderer.render(this.scene, this.camera);
-        requestAnimationFrame(this.animate);
-    }
-
-    resize() { }
-
-    createCube() {
-        // Objects
-        const boxGeometry = new BoxGeometry(1, 1, 1);
-        const material = new MeshBasicMaterial({ color: 0x44aa88 });
-        const cube = new Mesh(boxGeometry, material);
-        return cube;
+        return this.instance;
     }
 }
 
-const canvas = document.querySelector('#scene')! as HTMLCanvasElement;
+function main() {
+    const canvas = document.querySelector('#scene')! as HTMLCanvasElement;
+    const app = new ThreeApp(canvas);
 
-const app = new ThreeApp(canvas);
-requestAnimationFrame(app.animate);
+    let particle = new Particle(0.2, 0, 0, 0, 1);
+    particle.createParticle();
+
+    particle.getParticles().forEach((p) => {
+        app.addToScene(p);
+    })
+
+    makeAxisGrid(app.getScene(), 'scene');
+}
+
+main();
