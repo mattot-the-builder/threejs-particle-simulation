@@ -10,7 +10,7 @@ class AxisGridHelper {
         this.units = units;
 
         const axes = new AxesHelper();
-        axes.material.depthTest = false;
+        // axes.material.depthTest = false;
         axes.renderOrder = 2;  // after the grid
         node.add(axes);
 

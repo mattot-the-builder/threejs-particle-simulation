@@ -27,7 +27,7 @@ function main() {
     const canvas = document.querySelector('#scene')! as HTMLCanvasElement;
     const app = new ThreeApp(canvas);
 
-    let particle = new Particle(0.2, 0, 0, 0, 1);
+    let particle = new Particle();
     particle.createParticle();
 
     particle.getParticles().forEach((p) => {

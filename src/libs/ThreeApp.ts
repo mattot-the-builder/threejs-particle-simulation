@@ -4,7 +4,7 @@ class ThreeApp {
     private canvas: HTMLElement;
     private renderer!: WebGLRenderer;
     private scene!: Scene;
-    private camera!: Camera;
+    private camera!: PerspectiveCamera;
 
     private light!: Light;
 
