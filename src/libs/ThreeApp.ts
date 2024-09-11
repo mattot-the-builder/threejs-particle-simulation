@@ -28,8 +28,8 @@ class ThreeApp {
 
         // Camera
         this.camera = new PerspectiveCamera(75, 2, 1, 100);
-        this.camera.position.set(5, 5, 5);
-        this.camera.lookAt(0, 0, 0);
+        this.camera.position.set(20, 20, 20);
+        this.camera.lookAt(0, 10, 0);
 
         // Light
         this.light = new DirectionalLight(0xffffff, 1);
@@ -47,8 +47,11 @@ class ThreeApp {
         }
 
         this.objects.forEach((object) => {
-            object.rotation.x = time;
-            object.rotation.y = time;
+            if (object.position.y >= 0) {
+                object.position.y -= 0.2;
+            } else {
+                object.position.y = 30;
+            }
         });
 
         this.renderer.render(this.scene, this.camera);

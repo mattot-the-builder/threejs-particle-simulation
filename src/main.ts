@@ -1,33 +1,45 @@
 import './style.css'
 
-import { BoxGeometry, GridHelper, Mesh, MeshPhongMaterial, Object3D } from 'three';
-import GUI from 'lil-gui';
+import { BoxGeometry, DoubleSide, GridHelper, Mesh, MeshPhongMaterial, Object3D, Scene, SphereGeometry } from 'three';
 
 import ThreeApp from './libs/ThreeApp';
-import AxisGridHelper from './helpers/AxisGridHelper';
+import Particle from './libs/Particle';
+import { makeAxisGrid } from './helpers/HelperFunctions';
+
+class Gravity {
+    private instance: Gravity;
+    private GRAVITY_ACCELERATION: number = 9.80665; // in m/s^2
+
+    private constructor() {
+        this.instance = new Gravity();
+    }
+
+    getInstance() {
+        if (!this.instance) {
+            this.instance = new Gravity();
+        }
+
+        return this.instance;
+    }
+}
 
 function main() {
     const canvas = document.querySelector('#scene')! as HTMLCanvasElement;
     const app = new ThreeApp(canvas);
-    const gui = new GUI();
 
-    let cube: Object3D;
+    let particle = new Particle(0.2, 0, 0, 0, 1);
+    particle.createParticle(0.2, 2, 0, 0);
+    particle.createParticle(0.2, 4, 0, 0);
+    particle.createParticle(0.2, 6, 0, 0);
+    particle.createParticle(0.2, 8, 0, 0);
 
-    // Objects
-    {
-        const boxGeometry = new BoxGeometry(1, 1, 1);
-        const material = new MeshPhongMaterial({ color: 0x44aa88 });
-        cube = new Mesh(boxGeometry, material);
-        app.addToScene(cube);
-    }
+    console.log(particle.getParticles());
 
-    function makeAxisGrid(node: Object3D, label: string, units: number = 10) {
-        const helper = new AxisGridHelper(node, units);
-        gui.add(helper, 'visible').name(label);
-    }
+    particle.getParticles().forEach((p) => {
+        app.addToScene(p);
+    })
 
     makeAxisGrid(app.getScene(), 'scene');
-    makeAxisGrid(cube, 'cube', 10);
 }
 
 main();
