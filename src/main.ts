@@ -1,6 +1,6 @@
 import './style.css'
 
-import { BoxGeometry, DoubleSide, GridHelper, Mesh, MeshPhongMaterial, Object3D, Scene, SphereGeometry } from 'three';
+import { BoxGeometry, DoubleSide, GridHelper, Mesh, MeshPhongMaterial, Object3D, Points, Scene, SphereGeometry } from 'three';
 
 import ThreeApp from './libs/ThreeApp';
 import Particle from './libs/Particle';
@@ -28,12 +28,7 @@ function main() {
     const app = new ThreeApp(canvas);
 
     let particle = new Particle(0.2, 0, 0, 0, 1);
-    particle.createParticle(0.2, 2, 0, 0);
-    particle.createParticle(0.2, 4, 0, 0);
-    particle.createParticle(0.2, 6, 0, 0);
-    particle.createParticle(0.2, 8, 0, 0);
-
-    console.log(particle.getParticles());
+    particle.createParticle();
 
     particle.getParticles().forEach((p) => {
         app.addToScene(p);

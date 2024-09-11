@@ -1,23 +1,27 @@
 import { Mesh, Object3D, SphereGeometry } from 'three';
 
-import { createMaterial } from '../helpers/HelperFunctions';
+import { createMaterial, generateRandomNumber } from '../helpers/HelperFunctions';
 
 class Particle {
     private mass: number;
     private geometry!: SphereGeometry;
     private particle!: Object3D;
     private particles: Object3D[] = [];
+    private coordinateRange = 10;
 
-    constructor(radius: number, x: number, y: number, z: number, mass: number = 1,) {
+    constructor(mass: number = 1,) {
         this.mass = mass;
-        this.createParticle(radius, x, y, z);
     }
 
-    createParticle(radius: number, x: number, y: number, z: number) {
-        this.geometry = new SphereGeometry(radius, 32, 32);
+    createParticle() {
+        this.geometry = new SphereGeometry(generateRandomNumber(0.1, 0.5), 32, 32);
         this.particle = new Mesh(this.geometry, createMaterial());
-        this.particle.position.set(x, y, z);
+        this.particle.position.set(this.generateRandomCoordinate(), this.generateRandomCoordinate(), this.generateRandomCoordinate(),);
         this.particles.push(this.particle);
+    }
+
+    generateRandomCoordinate() {
+        return generateRandomNumber(-this.coordinateRange, this.coordinateRange);
     }
 
     getMass() {
